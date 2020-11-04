@@ -12,7 +12,8 @@ import {
 
 import { FormClose, Notification } from 'grommet-icons';
 
-import {Progressing as Graph} from './Graph';
+import Graph from './Graph';
+import Cards from './Cards';
 
 const theme = {
   global: {
@@ -57,6 +58,7 @@ function App() {
             </AppBar>
             <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
               <Box flex align='center' justify='center'>
+                <Cards />
                 <Graph />
               </Box>
               {(!showSidebar || size !== 'small') ? (

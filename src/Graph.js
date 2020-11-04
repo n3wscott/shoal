@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 
-import { Grommet, Box, Diagram, Stack, Text } from 'grommet';
+import { Grommet, Box, Diagram, Stack } from 'grommet';
 import { grommet } from 'grommet/themes';
 
 const Node = ({ id, ...rest }) => (
@@ -26,49 +26,34 @@ const connection = (fromTarget, toTarget, { color, ...rest } = {}) => ({
   ...rest,
 });
 
-const fullTopRow = [1, 2, 3];
-
 export const Progressing = () => {
-  const reducer = topRow => {
-    const sliceEnd = topRow.length < fullTopRow.length ? topRow.length + 1 : 1;
-    return fullTopRow.slice(0, sliceEnd);
-  };
+  const connections = [
+    connection('1', '5'),
+    connection('1', '9'),
+    connection('2', '6', { anchor: 'horizontal', color: 'brand' })
+  ];
 
-  const [topRow, dispatch] = useReducer(reducer, fullTopRow.slice(0, 1));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      dispatch();
-    }, 2000);
-    return () => clearInterval(timer);
-  }, [dispatch]);
-
-  const connections = [connection('1', '5'), connection('2', '6')];
-
-  if (topRow.length >= 2) {
-    connections.push(connection('1', '2', { anchor: 'horizontal' }));
-  }
-
-  if (topRow.length >= 3) {
-    connections.push(
-      connection('3', '5', { anchor: 'horizontal', color: 'brand' }),
-    );
-  }
+  connections.push(connection('1', '2', { anchor: 'horizontal' }));
+  connections.push(connection('3', '5', { anchor: 'horizontal', color: 'brand' }));
 
   return (
     <Grommet theme={grommet}>
       <Box align="start" pad="large">
-        <Text> Adding and removing nodes</Text>
         <Stack>
           <Box>
             <Box direction="row">
-              {topRow.map(id => (
-                <Node key={id} id={id} />
+              {[1, 2, 3].map(id => (
+                <Node key={id} id={id}/>
               ))}
             </Box>
             <Box direction="row">
               {[4, 5, 6].map(id => (
                 <Node key={id} id={id} background="dark-2" />
+              ))}
+            </Box>
+            <Box direction="row">
+              {[7, 8, 9].map(id => (
+                <Node key={id} id={id} background="dark-3" />
               ))}
             </Box>
           </Box>
@@ -78,3 +63,5 @@ export const Progressing = () => {
     </Grommet>
   );
 };
+
+export default Progressing;
