@@ -19,6 +19,7 @@ const data = [
     title: 'Remote Access',
     subTitle: 'Lights out Management (LOM)',
     message: 'Connected',
+    url: '/blue',
   },
   {
     color: 'green',
@@ -26,6 +27,7 @@ const data = [
     title: 'System',
     subTitle: 'Sub-system and Devices',
     message: 'Composable System',
+    url: '/green',
   },
   {
     color: 'red',
@@ -33,6 +35,7 @@ const data = [
     title: 'User Sessions',
     subTitle: 'User Access on Server',
     message: '4 active sessions',
+    url: '/red',
   },
   {
     color: 'purple',
@@ -40,6 +43,7 @@ const data = [
     title: 'Logs',
     subTitle: 'Events, Integration, and Status',
     message: '204,353',
+    url: '/purple',
   },
   {
     color: 'orange',
@@ -47,6 +51,7 @@ const data = [
     title: 'Beacons',
     subTitle: 'Unique identification light',
     message: '24 beacons connected',
+    url: '/orange',
   },
   {
     color: 'teal',
@@ -54,6 +59,7 @@ const data = [
     title: 'Security',
     subTitle: 'Trusted Platform Module',
     message: 'No Module Connected',
+    url: '/teal',
   },
 ];
 
@@ -128,7 +134,7 @@ export class Themed extends Component {
           </Box>
           <Grid gap="medium" rows="f" columns={{ count: 'fit', size: 'small' }}>
             {this.state.data.map(value => (
-              <Fish color={value.color} icon={value.icon} subTitle={value.subTitle} message={value.message} />
+              <Fish url={value.url} color={value.color} icon={value.icon} subTitle={value.subTitle} message={value.message} />
             ))}
           </Grid>
         </Box>

@@ -18,6 +18,7 @@ export class Fish extends Component {
   constructor(props) {
     super(props);
     this.state = {props: props, words: "", date: new Date()};
+    this.url = props.url;
   }
 
   componentDidMount() {
@@ -32,16 +33,16 @@ export class Fish extends Component {
   }
 
   tick() {
-    fetch('https://baconipsum.com/api/?callback=?&sentences=1')
-            .then(res => res.json())
-            .then((bacon) => {
-              console.log("got bacon:" + bacon)
-              this.setState({
-                words: bacon,
-                date: new Date()
-              })
-            })
-            .catch(console.log)
+    fetch(this.url)
+      .then(res => res.json())
+      .then((bacon) => {
+        console.log("got bacon:" + bacon)
+        this.setState({
+          words: bacon.text,
+          date: new Date()
+        })
+      })
+      .catch(console.log)
   }
 
   render() {
