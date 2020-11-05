@@ -1,5 +1,6 @@
 const Data = [
   {
+    tier: 0,
     color: 'blue',
     icon: "Car",
     title: 'Remote Access',
@@ -8,6 +9,7 @@ const Data = [
     url: '/blue',
   },
   {
+    tier: 1,
     color: 'green',
     icon: "System",
     title: 'System',
@@ -20,6 +22,7 @@ const Data = [
     },
   },
   {
+    tier: 2,
     color: 'red',
     icon: "User",
     title: 'User Sessions',
@@ -28,6 +31,7 @@ const Data = [
     url: '/red',
   },
   {
+    tier: 2,
     color: 'purple',
     icon: "Tasks",
     title: 'Logs',
@@ -36,6 +40,7 @@ const Data = [
     url: '/purple',
   },
   {
+    tier: 3,
     color: 'orange',
     icon: "Location",
     title: 'Beacons',
@@ -44,6 +49,7 @@ const Data = [
     url: '/orange',
   },
   {
+    tier: 3,
     color: 'teal',
     icon: "ShieldSecurity",
     title: 'Security',
