@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
 import { Box, Button, Card, CardBody, CardFooter, Grid, Grommet, Text } from 'grommet';
+import Icon from './Icon';
+
 
 const Identifier = ({ children, title, subTitle, size, ...rest }) => (
   <Box gap="small" align="center" {...rest}>
@@ -17,7 +18,7 @@ const Identifier = ({ children, title, subTitle, size, ...rest }) => (
 export class Fish extends Component {
   constructor(props) {
     super(props);
-    this.state = {props: props, words: "", date: new Date()};
+    this.state = {words: "", date: new Date()};
     this.url = props.url;
   }
 
@@ -47,22 +48,22 @@ export class Fish extends Component {
 
   render() {
     return(
-      <Card basis="auto" background={this.state.props.color} key={this.state.props.message}>
+      <Card basis="auto" background={this.props.color} key={this.props.message}>
         <CardBody pad="small">
           <Identifier
             pad="small"
-            title={this.state.props.title}
-            subTitle={this.state.props.subTitle}
+            title={this.props.title}
+            subTitle={this.props.subTitle}
             size="small"
             align="start"
           >
-            {this.state.props.icon}
+            <Icon name={this.props.icon}/>
             <Text>{this.state.words}</Text>
             <Text>It is {this.state.date.toLocaleTimeString()}.</Text>
           </Identifier>
         </CardBody>
         <CardFooter pad={{ horizontal: 'medium', vertical: 'small' }}>
-          <Text size="xsmall">{this.state.props.message}</Text>
+          <Text size="xsmall">{this.props.message}</Text>
         </CardFooter>
       </Card>
     )
