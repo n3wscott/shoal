@@ -7,7 +7,7 @@ import (
 
 func hello(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
-		"text": "hello " + req.URL.Path,
+		"text": "hello " + req.URL.String(),
 	})
 }
 

@@ -9,6 +9,7 @@ import {
  Grommet,
  Layer,
  ResponsiveContext,
+  Form, FormField, TextInput, Select,
 } from 'grommet';
 
 import { Add, Dashboard, View } from 'grommet-icons';
@@ -25,15 +26,13 @@ import data from './data'
 
 const theme = {
   global: {
-    colors: {
-      brand: '#228BE6',
-    },
     font: {
       family: 'Roboto',
       size: '18px',
       height: '20px',
     },
     colors: {
+      brand: '#228BE6',
       blue: '#00C8FF',
       green: '#17EBA0',
       teal: '#82FFF2',
@@ -70,6 +69,7 @@ export class App extends Component {
     super(props);
     this.state = {
       showSidebar: false,
+      showAdd: false,
       cards: data,
     }
     this.next = 1;
@@ -77,18 +77,23 @@ export class App extends Component {
 
   handleAdd() {
     console.log("here on handle click add")
-    let newCards = [];
-    for (let i = 0; i < this.next; i++) {
-      newCards.push(data[i%data.length])
-    }
-    this.setState({
-        cards: newCards,
-    })
+    this.add(data[this.next%data.length])
+  }
+
+  add(entry) {
+    this.setState(state => {
+      const list = [...state.cards, entry];
+
+      return {
+        cards: list
+      };
+    });
     this.next++;
   }
 
   handleView() {
     console.log("here on handle click view")
+    this.setState({ showAdd: true})
   }
   
 
@@ -114,7 +119,7 @@ export class App extends Component {
                     <Box fill pad="large">
                       <Grid gap="medium" rows="f" columns={{ count: 'fit', size: 'small' }}>
                         {this.state.cards.map(value => (
-                          <Fish url={value.url} color={value.color} icon={value.icon} subTitle={value.subTitle} message={value.message} />
+                          <Fish params={value}/>
                         ))}
                       </Grid>
                     </Box>
@@ -161,6 +166,7 @@ export class App extends Component {
             </Box>
           )}
         </ResponsiveContext.Consumer>
+        {!this.state.showAdd && (
         <Fab
           mainButtonStyles={{
             backgroundColor: theme.global.colors.brand,
@@ -185,6 +191,53 @@ export class App extends Component {
             <View color="white"/>
           </Action>
         </Fab>
+        )}
+          
+            {this.state.showAdd && (
+              <Layer
+                onEsc={() => this.setState({ showAdd: false})}
+                onClickOutside={() => this.setState({ showAdd: false})}
+              >
+                <Button label="close" onClick={() => this.setState({ showAdd: false})} />
+                <Box pad="large">
+    <Form onSubmit={({ value }) => {
+      console.log("hey, got a form post: ");
+      console.log(value);
+      this.add(value);
+    }}>
+      <FormField label="Title">
+        <TextInput name="title" />
+      </FormField>
+      <FormField label="Color">
+        <Select
+              name="color"
+              options={['blue', 'green', 'teal', 'purple', 'red', 'orange', 'yellow',]}
+        />
+      </FormField>
+      <FormField label="Icon">
+        <Select name="icon"
+              options={['Add', 'Location', 'System', 'ShieldSecurity', 'Tasks', 'User', 'Wifi', 'Car', 'Bar', 'Cloud',]}
+        />
+      </FormField>
+      <FormField label="Sub-Title">
+        <TextInput name="subTitle" />
+      </FormField>
+      <FormField label="Message">
+        <TextInput name="message" />
+      </FormField>
+      <FormField label="URL">
+        <TextInput name="url" />
+      </FormField>
+
+      <Box direction="row" gap="medium">
+        <Button type="submit" primary label="Submit" />
+        <Button type="reset" label="Reset" />
+      </Box>
+    </Form>
+              </Box>
+              </Layer>
+            )}
+
       </Grommet>
     );
   }

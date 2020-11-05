@@ -14,6 +14,10 @@ const Data = [
     subTitle: 'Sub-system and Devices',
     message: 'Composable System',
     url: '/green',
+    query: {
+      foo: "bar",
+      baz: "boof"
+    },
   },
   {
     color: 'red',
