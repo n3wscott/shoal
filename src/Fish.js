@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, Button, Card, CardBody, CardFooter, Grid, Grommet, Text } from 'grommet';
+import { Box, List, Table, TableHeader, TableBody, TableRow, TableCell, Button, Card, CardBody, CardFooter, Grid, Grommet, Text } from 'grommet';
 import Icon from './Icon';
 
 
@@ -12,6 +12,38 @@ const Identifier = ({ children, title, subTitle, size, ...rest }) => (
       </Text>
       <Text size={size}>{subTitle}</Text>
     </Box>
+  </Box>
+);
+
+const Data = ({ children, states, ...rest }) => (
+  <Box gap="small" {...rest}>
+    <Table margin="xsmall" size="xxsmall">
+      <TableHeader>
+        <TableRow>
+          <TableCell border="bottom">
+            Type
+          </TableCell>
+          <TableCell scope="col" border="bottom">
+            Status
+          </TableCell>
+          <TableCell scope="col" border="bottom">
+            Reason
+          </TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {(typeof states === "undefined" || !states.length) ? (<></>) : (
+          states.map(c => (
+          <TableRow>
+            <TableCell>{c.type}</TableCell>
+            <TableCell>{c.status}</TableCell>
+            <TableCell>{c.reason}</TableCell>
+          </TableRow>
+        ))
+        )}
+      </TableBody>
+    </Table>
+    {children}
   </Box>
 );
 
@@ -53,13 +85,16 @@ export class Fish extends Component {
     fetch(this.url)
       .then(res => res.json())
       .then((bacon) => {
-        console.log("got bacon:" + bacon)
+        console.log("got bacon:");
+        console.log(bacon);
         this.setState({
-          words: bacon.text,
+          title: bacon.title,
+          message: bacon.message,
+          conditions: bacon.conditions,
           date: new Date()
-        })
+        });
       })
-      .catch(console.log)
+      .catch(console.log);
   }
 
   render() {
@@ -68,15 +103,16 @@ export class Fish extends Component {
         <CardBody pad="small">
           <Identifier
             pad="small"
-            title={this.props.params.title}
+            title={this.state.title}
             subTitle={this.props.params.subTitle}
             size="small"
             align="start"
           >
             <Icon name={this.props.params.icon}/>
-            <Text>{this.state.words}</Text>
             <Text>It is {this.state.date.toLocaleTimeString()}.</Text>
           </Identifier>
+          <Data states={this.state.conditions} />
+
         </CardBody>
         <CardFooter pad={{ horizontal: 'medium', vertical: 'small' }}>
           <Text size="xsmall">{this.props.params.message}</Text>
