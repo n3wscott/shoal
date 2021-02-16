@@ -10,6 +10,9 @@ import {
   Car,
   Bar,
   Cloud,
+  CircleAlert,
+  CircleInformation,
+  EmptyCircle,
 } from 'grommet-icons';
 
 
@@ -24,6 +27,9 @@ const icons = {
   "Car": Car,
   "Bar": Bar,
   "Cloud": Cloud,
+  "CircleAlert": CircleAlert,
+  "CircleInformation": CircleInformation,
+  "EmptyCircle": EmptyCircle,
 };
 
 export class IconWrapper extends Component {

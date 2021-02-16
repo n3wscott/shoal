@@ -1,7 +1,29 @@
-import React, { Component } from 'react';
-import { Box, List, Table, TableHeader, TableBody, TableRow, TableCell, Button, Card, CardBody, CardFooter, Grid, Grommet, Text } from 'grommet';
+import React, { Component, useRef, useState, useEffect, useLayoutEffect } from 'react';
+
+import {
+  Box,
+  List,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Grid,
+  Grommet,
+  Text,
+  ResponsiveContext
+} from 'grommet';
 import Icon from './Icon';
 
+import {
+  Alert,
+  CircleInformation,
+  Checkmark,
+} from 'grommet-icons';
 
 const Identifier = ({ children, title, subTitle, size, ...rest }) => (
   <Box gap="small" align="center" {...rest}>
@@ -15,37 +37,94 @@ const Identifier = ({ children, title, subTitle, size, ...rest }) => (
   </Box>
 );
 
-const Data = ({ children, states, ...rest }) => (
-  <Box gap="small" {...rest}>
-    <Table margin="xsmall" size="xxsmall">
-      <TableHeader>
-        <TableRow>
-          <TableCell border="bottom">
-            Type
-          </TableCell>
-          <TableCell scope="col" border="bottom">
-            Status
-          </TableCell>
-          <TableCell scope="col" border="bottom">
-            Reason
-          </TableCell>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {(typeof states === "undefined" || !states.length) ? (<></>) : (
-          states.map(c => (
-          <TableRow>
-            <TableCell>{c.type}</TableCell>
-            <TableCell>{c.status}</TableCell>
-            <TableCell>{c.reason}</TableCell>
-          </TableRow>
-        ))
-        )}
-      </TableBody>
-    </Table>
+const Data = ({ children, states, ...rest }) => {
+  const targetRef = useRef();
+  const [dimensions, setDimensions] = useState({ width:0, height: 0 });
+
+  useLayoutEffect(() => {
+    console.log("here in useLayoutEffect")
+    if (targetRef.current) {
+      let size = "large";
+      if (targetRef.current.offsetWidth > 1000 ) {
+        size = "large";
+      } else if (targetRef.current.offsetWidth > 400 ) {
+        size = "medium";
+      } else {
+        size = "small";
+      }
+
+      setDimensions({
+        size: size,
+        width: targetRef.current.offsetWidth,
+        height: targetRef.current.offsetHeight
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("here in useEffect")
+    if (targetRef.current) {
+      let size = "large";
+      if (targetRef.current.offsetWidth > 1000 ) {
+        size = "large";
+      } else if (targetRef.current.offsetWidth > 400 ) {
+        size = "medium";
+      } else {
+        size = "small";
+      }
+
+      setDimensions({
+        size: size,
+        width: targetRef.current.offsetWidth,
+        height: targetRef.current.offsetHeight
+      });
+    }
+  }, [targetRef]);
+
+  return (
+    <Box gap="small" {...rest} ref={ targetRef }>
+        <Table margin="xsmall" size="xxsmall">
+          <TableHeader>
+            <TableRow>
+              <TableCell border="bottom">
+                Type
+              </TableCell>
+              <TableCell scope="col" border="bottom">
+                Status
+              </TableCell>
+              {(dimensions.size !== 'small') && (
+                <TableCell scope="col" border="bottom">
+                  Reason
+                  <p>{dimensions.size}</p>
+                  <p>{dimensions.width}</p>
+                </TableCell>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {(typeof states === "undefined" || !states.length) ? (<></>) : (
+              states.map(c => (
+                <TableRow>
+                  <TableCell>
+                    {c.type}
+                  </TableCell>
+                  <TableCell>
+                    {(c.status === "True") && (<Checkmark/>)}
+                    {(c.status === "Unknown") && (<CircleInformation/>)}
+                    {(c.status === "False") && (<Alert/>)}
+                  </TableCell>
+                  {(dimensions.size !== 'small') && (
+                    <TableCell>{c.reason}</TableCell>
+                  )}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
     {children}
   </Box>
 );
+};
 
 export class Fish extends Component {
   constructor(props) {
